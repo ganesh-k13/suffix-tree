@@ -5,14 +5,14 @@ Node::Node(int start, int *end) {
 	for (int i = 0; i < MAX_CHAR; i++)
 		set_children(i, NULL); // node->children[i] = NULL;
 
-	// node->set_suffixlink(root); // node->suffixLink = root;
+	// node->set_suffix_link(root); // node->suffix_link = root;
 	set_start(start);
 	set_end(end);
 
-	/*suffixIndex will be set to -1 by default and
+	/*suffix_index will be set to -1 by default and
 	actual suffix index will be set later for leaves
 	at the end of all phases*/
-	set_suffixIndex(-1);
+	set_suffix_index(-1);
 }
 
 
@@ -25,12 +25,12 @@ Node::~Node() {
 	return children[index]; 
 }
 
- Node* Node::get_suffixLink() { 
-	return suffixLink; 
+ Node* Node::get_suffix_link() { 
+	return suffix_link; 
 }
 
- int Node::get_suffixIndex() { 
-	return suffixIndex;
+ int Node::get_suffix_index() { 
+	return suffix_index;
 }
 
  int Node::get_start() { 
@@ -46,12 +46,12 @@ Node::~Node() {
 	children[index] = value; 
 }
 
- void Node::set_suffixIndex(int index) { 
-	suffixIndex = index; 
+ void Node::set_suffix_index(int index) { 
+	suffix_index = index; 
 }
 
- void Node::set_suffixlink(Node *link) { 
-	suffixLink = link; 
+ void Node::set_suffix_link(Node *link) { 
+	suffix_link = link; 
 }
 
  void Node::set_start(int start) { 
