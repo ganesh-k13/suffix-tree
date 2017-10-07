@@ -19,7 +19,7 @@ void test_one(string query) {
 	for(auto it = index_list.begin(); it != index_list.end(); ++it) {
 		auto pos = nearest_search(end_points, *it);
 		// cout << *(pos_pair.second)-10 << " " << *(pos_pair.second)+10;
-		cout << "[" << title_map[pos] << "] : ... " << all_lines.substr(*(it)-20, 40) << " ..." <<  endl;
+		cout << "[" << title_map[pos] << "] : ... " << all_lines.substr(*(it)-40, 80) << " ..." <<  endl;
 	}
 	
 	#if 0

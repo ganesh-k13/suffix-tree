@@ -57,4 +57,6 @@ class SuffixTree {
 		int do_traversal(Node *n, const char* str, int idx);
 
 		vector <int> check_for_sub_string(const char* str);
+		
+		void get_LCS();
 };

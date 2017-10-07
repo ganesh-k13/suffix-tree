@@ -89,7 +89,7 @@ void SuffixTree::extend_suffix_tree(int pos) {
 				break;
 			}
 
-			split_end = (int*) malloc(sizeof(int));
+			split_end = new int;
 			*split_end = next->get_start() + active_length - 1;
 
 			Node *split = new_node(next->get_start(), split_end);
@@ -120,7 +120,7 @@ void SuffixTree::extend_suffix_tree(int pos) {
 void SuffixTree::print(int i, int j) {
 	
 	for (int k=i; k<=j; k++)
-		printf("%c", text[k]);
+		cout << text[k];
 }
 
 void SuffixTree::set_suffix_index_by_DFS(Node *n, int labelHeight) {
@@ -157,14 +157,14 @@ void SuffixTree::free_suffix_tree_by_post_order(Node *n) {
 		}
 	}
 	if (n->get_suffix_index() == -1)
-		free(n->get_end());
-	free(n);
+		delete (n->get_end());
+	delete(n);
 }
 
 void SuffixTree::build_suffix_tree() {
 	size = text.size();
 	int i;
-	root_end = (int*) malloc(sizeof(int));
+	root_end = new int;
 	*root_end = - 1;
 
 	root = new_node(-1, root_end);
@@ -193,7 +193,7 @@ int SuffixTree::do_traversal_to_count_leaf(Node *n) {
 	if(n == NULL)
 		return 0;
 	if(n->get_suffix_index() > -1) {
-		printf("\nFound at position: %d", n->get_suffix_index());
+		// printf("\nFound at position: %d", n->get_suffix_index());
 		index_list.push_back(n->get_suffix_index());
 		return 1;
 	}
@@ -227,11 +227,11 @@ int SuffixTree::do_traversal(Node *n, const char* str, int idx) {
 			return -1;
 		if(res == 1) {
 			if(n->get_suffix_index() > -1) { 
-				printf("\nsubstring count: 1 and position: %d", n->get_suffix_index());
+				cout << "\nsubstring count: 1";
 				index_list.push_back(n->get_suffix_index());
 			}
 			else
-				printf("\nsubstring count: %d", count_leaf(n));
+				cout << "\nsubstring count: " << count_leaf(n);
 			return 1;
 		}
 	}
@@ -249,7 +249,25 @@ vector <int> SuffixTree::check_for_sub_string(const char* str) {
 		// cout << endl << index_list.size() << endl;
 	}
 	else
-		printf("\nPattern <%s> is NOT a Substring\n", str);
+		cout << "\nPattern <"<< str <<"> is NOT a Substring\n";
 	
 	return index_list;
 }
+
+#if 0
+void SuffixTree::get_LCS()
+{
+    int max_height = 0;
+    int substring_start_index = 0;
+    do_traversal(root, 0, &max_height, &substring_start_index);
+     
+    int k;
+    for (k=0; k<max_height; k++)
+        printf("%c", text[k + substring_start_index]);
+    if(k == 0)
+        printf("No common substring");
+    else
+        printf(", of length: %d",max_height);
+    printf("\n");
+}
+#endif
