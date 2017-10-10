@@ -16,7 +16,27 @@ SuffixTree::SuffixTree(string text) {
 	root_end = NULL;
 	split_end = NULL;
 	size = -1; //Length of input string
+	size_sub_str = -1;
+	build_suffix_tree();
 	
+}
+
+SuffixTree::SuffixTree(string text, int size_sub_str) {
+	this->text = text;
+	this->size_sub_str = size_sub_str;
+	root = NULL;
+	last_new_node = NULL;
+	active_node = NULL;
+	
+	active_edge = -1;
+	active_length = 0;
+	
+	remaining_suffix_count = 0;
+	leaf_end = -1;
+	root_end = NULL;
+	split_end = NULL;
+	size = -1; //Length of input string
+	size_sub_str = -1;
 	build_suffix_tree();
 	
 }
@@ -254,9 +274,8 @@ vector <int> SuffixTree::check_for_sub_string(const char* str) {
 	return index_list;
 }
 
-#if 0
-void SuffixTree::get_LCS()
-{
+#if 1
+void SuffixTree::get_LCS() {
     int max_height = 0;
     int substring_start_index = 0;
     do_traversal(root, 0, &max_height, &substring_start_index);
@@ -270,4 +289,48 @@ void SuffixTree::get_LCS()
         printf(", of length: %d",max_height);
     printf("\n");
 }
+
+int SuffixTree::do_traversal(Node *n, int label_height, int* max_height, int* substring_start_index)
+{
+	if(n == NULL)
+	{
+		return NULL;
+	}
+	int i=0;
+	int ret = -1;
+	if(n->get_suffix_index() < 0) //If it is internal node
+	{
+		for (i = 0; i < MAX_CHAR; i++)
+		{
+			if(n->get_children(i) != NULL)
+			{
+				ret = do_traversal(n->get_children(i), label_height + 
+					edge_length(n->get_children(i)), 
+					max_height, substring_start_index);
+				 
+				if(n->get_suffix_index() == -1)
+					n->set_suffix_index(ret);
+				else if((n->get_suffix_index() == -2 && ret == -3) ||
+					(n->get_suffix_index() == -3 && ret == -2) || 
+					n->get_suffix_index() == -4)
+				{
+					n->set_suffix_index(-4);//Mark node as XY
+					//Keep track of deepest node
+					if(*max_height < label_height)
+					{
+						*max_height = label_height;
+						*substring_start_index = *(n->get_end()) - 
+							label_height + 1;
+					}
+				}
+			}
+		}
+	}
+	else if(n->get_suffix_index() > -1 && n->get_suffix_index() < size_sub_str)//suffix of X
+		return -2;//Mark node as X
+	else if(n->get_suffix_index() >= size_sub_str)//suffix of Y
+		return -3;//Mark node as Y
+	return n->get_suffix_index();
+}
+ 
 #endif

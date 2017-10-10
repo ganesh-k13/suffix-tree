@@ -21,10 +21,11 @@ class SuffixTree {
 	int *root_end;
 	int *split_end;
 	int size; //Length of input string
-	
+	int size_sub_str;
 	public: 
 		
 		SuffixTree(string text);
+		SuffixTree(string text, int size_sub_str);
 		~SuffixTree();
 		Node *get_root();
 		Node *new_node(int start, int *end);
@@ -55,6 +56,7 @@ class SuffixTree {
 		int count_leaf(Node *n);
 
 		int do_traversal(Node *n, const char* str, int idx);
+		int do_traversal(Node *n, int label_height, int* max_height, int* substring_start_index);
 
 		vector <int> check_for_sub_string(const char* str);
 		

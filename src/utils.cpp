@@ -1,6 +1,12 @@
 #include "../include/utils.h"
 #include <algorithm>
 
+double accum_time(struct timespec requestStart, struct timespec requestEnd) {
+    
+    return ((requestEnd.tv_sec - requestStart.tv_sec)) * 1000 +
+            (( requestEnd.tv_nsec - requestStart.tv_nsec ) / MILLION);
+}
+
 int nearest_search(vector <int> end_points, int index) {
 	
 	int index_found = 0;
@@ -44,6 +50,28 @@ map <int, string> get_data(string file_name, string *all_lines, vector<int> *end
 	(*end_points).push_back((*all_lines).size());
 	
 	return title_map;
+}
+
+map <string, string> get_stories(string file_name) {
+	map<string, string> stories;
+	string line, story, title;
+	ifstream file(file_name.c_str());
+	getline(file, title);
+	
+	while(getline(file, line)) {
+		if(line.empty()) {
+			stories.insert(pair<string, string>(title, story));
+			story = ""; title = "";
+			getline(file, title);
+			while(title.empty())
+				getline(file, title);
+			cout << title << endl;
+			continue;
+		}
+		(story)+=(line+" ");
+	}
+	
+	return stories;
 }
 
 #if 0

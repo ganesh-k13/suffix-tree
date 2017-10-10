@@ -268,6 +268,66 @@ class SuffixTree {
 				delete (n->end);
 			delete (n);
 		}
+		int do_traversal(Node *n, int label_height, int* max_height, int* substring_start_index)
+		{
+			if(n == NULL)
+			{
+				return NULL;
+			}
+			int i=0;
+			int ret = -1;
+			if(n->suffixIndex < 0) //If it is internal node
+			{
+				for (i = 0; i < MAX_CHAR; i++)
+				{
+					if(n->children[i] != NULL)
+					{
+						ret = do_traversal(n->children[i], label_height + 
+							edgeLength(n->children[i]), 
+							max_height, substring_start_index);
+						 
+						if(n->suffixIndex == -1)
+							n->suffixIndex = ret;
+						else if((n->suffixIndex == -2 && ret == -3) ||
+							(n->suffixIndex == -3 && ret == -2) || 
+							n->suffixIndex == -4)
+						{
+							n->suffixIndex = -4;//Mark node as XY
+							//Keep track of deepest node
+							if(*max_height < label_height)
+							{
+								*max_height = label_height;
+								*substring_start_index = *(n->end) - 
+									label_height + 1;
+							}
+						}
+					}
+				}
+			}
+			else if(n->suffixIndex > -1 && n->suffixIndex < size1)//suffix of X
+				return -2;//Mark node as X
+			else if(n->suffixIndex >= size1)//suffix of Y
+				return -3;//Mark node as Y
+			return n->suffixIndex;
+		}
+		 
+		void getLongestCommonSubstring()
+		{
+			int max_height = 0;
+			int substring_start_index = 0;
+			// do {
+				// printf("Enter");
+				do_traversal(root, 0, &max_height, &substring_start_index);
+			// }while(max_height != 0);
+			int k;
+			for (k=0; k<max_height; k++)
+				printf("%c", text[k + substring_start_index]);
+			if(k == 0)
+				printf("No common substring");
+			else
+				printf(", of length: %d",max_height);
+			printf("\n");
+		}
 };
 
 int main() {

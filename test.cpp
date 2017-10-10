@@ -3,14 +3,23 @@
 #include "include/utils.h"
 
 void test_one(string query) {
+	struct timespec requestStart, requestEnd;
 	string all_lines;
 	vector <int> end_points;
 	// cout << "enter";
 	auto title_map = get_data("AesopTales.txt", &all_lines, &end_points);
 	
+	clock_gettime(CLOCK_REALTIME, &requestStart);
 	SuffixTree st(all_lines);
+	clock_gettime(CLOCK_REALTIME, &requestEnd);
 	
+	cout << "\nTree Built in: " << accum_time(requestStart, requestEnd) << endl;
+	
+	clock_gettime(CLOCK_REALTIME, &requestStart);
 	auto index_list = st.check_for_sub_string(query.c_str());
+	clock_gettime(CLOCK_REALTIME, &requestEnd);
+	cout << "\nMatches found in: " << accum_time(requestStart, requestEnd) << endl << endl;
+	
 	auto it_m = title_map.begin();
 	// for(auto it_v = index_list.begin(); it_v != index_list.end(); ++it_v) {
 		// cout << *it_v << endl;
@@ -33,12 +42,25 @@ void test_one(string query) {
 	st.free_suffix_tree_by_post_order(st.get_root());
 }
 
-void test_two() {
+void test_two(string query) {
+	string text = "xabxaabxa#babxba$";
+	int size_sub_str = 10;
+	SuffixTree st(text, size_sub_str);
+	st.get_LCS();
+	auto index_list = st.check_for_sub_string("abxa");
 	
+	cout << index_list.size();
+	
+	st.free_suffix_tree_by_post_order(st.get_root());
 }
 
 void test_three() {
 	
+}
+
+void test_test(string query) {
+	get_stories("AesopTales.txt");
+	return;
 }
 
 void run_tests(char** args, int no_of_args) {
@@ -54,12 +76,17 @@ void run_tests(char** args, int no_of_args) {
 			test_one(query);
 		}
 
-		if(!strcmp(args[0], "-2")) {
-			test_two();
+		if(mode == "-2") {
+			// cout << "enter";
+			test_two(query);
 		}
 		
 		if(!strcmp(args[0], "-3")) {
 			test_three();
+		}
+		
+		if(mode == "-t") {
+			test_test(query);
 		}
 	}
 
