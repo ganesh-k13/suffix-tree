@@ -46,7 +46,7 @@ For using the Suffix Tree:
 ## Built With
 
 * [C++](http://www.cplusplus.com/) - The main backend used
-* [clang](https://docs.python.org/3/) - Used for testing
+* [clang](https://clang.llvm.org/) - Used for testing
 
 ## Authors
 
@@ -54,6 +54,6 @@ For using the Suffix Tree:
 
 ## Acknowledgments
 
-This is developed as an assignment for Advanced Algorithms Course.
-This code is completely based on Geeks For Geeks implementation of Suffix tree using C.
-I would like to thank Tushar Roy for his vides on Ukkonens implementation of Suffix Tree.
+* This is developed as an assignment for Advanced Algorithms Course.
+* This code is completely based on Geeks For Geeks implementation of [Suffix tree](http://www.geeksforgeeks.org/generalized-suffix-tree-1/) using C.
+* I would like to thank [Tushar Roy](https://www.youtube.com/user/tusharroy2525) for his [video](https://www.youtube.com/watch?v=aPRqocoBsFQ) on Ukkonens implementation of Suffix Tree.

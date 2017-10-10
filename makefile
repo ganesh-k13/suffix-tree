@@ -1,5 +1,14 @@
-CC=clang++
+CHECK := $(shell which clang++)
 
+ifeq ($(CHECK),)
+$(warning No clang++ found, consider apt-get install clang, using g++ now)
+CC = g++
+else
+$(info using clang++ over g++)
+CC = clang++
+endif
+
+CC = clang++
 IDIR=include
 ODIR=obj
 SRCDIR=src
