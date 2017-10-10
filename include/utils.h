@@ -16,3 +16,4 @@ vector <int>::iterator nearest_binary_search(vector <int> end_points);
 int nearest_search(vector <int> end_points, int index);
 double accum_time(struct timespec requestStart, struct timespec requestEnd);
 map <string, string> get_stories(string file_name);
+void print_result(string title, string lines);

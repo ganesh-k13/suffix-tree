@@ -247,11 +247,11 @@ int SuffixTree::do_traversal(Node *n, const char* str, int idx) {
 			return -1;
 		if(res == 1) {
 			if(n->get_suffix_index() > -1) { 
-				cout << "\nsubstring count: 1";
+				// cout << "\nsubstring count: 1";
 				index_list.push_back(n->get_suffix_index());
 			}
-			else
-				cout << "\nsubstring count: " << count_leaf(n);
+			// else
+				// cout << "\nsubstring count: " << count_leaf(n) << endl;
 			return 1;
 		}
 	}
@@ -275,19 +275,22 @@ vector <int> SuffixTree::check_for_sub_string(const char* str) {
 }
 
 #if 1
-void SuffixTree::get_LCS() {
+vector <int> SuffixTree::get_LCS() {
     int max_height = 0;
     int substring_start_index = 0;
     do_traversal(root, 0, &max_height, &substring_start_index);
      
-    int k;
-    for (k=0; k<max_height; k++)
-        printf("%c", text[k + substring_start_index]);
-    if(k == 0)
-        printf("No common substring");
-    else
-        printf(", of length: %d",max_height);
-    printf("\n");
+    if(max_height == 0) {
+        cout << "No common substring\n";
+	}
+	
+	else {
+		index_list.clear();
+		// cout << text.substr(substring_start_index, max_height);
+		do_traversal(root, text.substr(substring_start_index, max_height).c_str(), 0);
+	}
+    
+	return index_list;
 }
 
 int SuffixTree::do_traversal(Node *n, int label_height, int* max_height, int* substring_start_index)

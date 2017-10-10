@@ -60,18 +60,28 @@ map <string, string> get_stories(string file_name) {
 	
 	while(getline(file, line)) {
 		if(line.empty()) {
+			// cout << story << endl;
 			stories.insert(pair<string, string>(title, story));
 			story = ""; title = "";
 			getline(file, title);
 			while(title.empty())
 				getline(file, title);
-			cout << title << endl;
+			// cout << title << endl;
 			continue;
 		}
 		(story)+=(line+" ");
 	}
 	
+	// cout << endl << title;
+	
+	stories.insert(pair<string, string>(title, story));
+	
 	return stories;
+}
+
+void print_result(string title, string lines) {
+	cout << "[" << title << "] : ... " << lines << " ..." <<  endl;
+	return;
 }
 
 #if 0
