@@ -73,10 +73,10 @@ void test_two(string query) {
 		
 		// cout << *min_index;
 		try {
-			print_result(it->first, (it->second).substr(*(min_index), 80), (it->second).substr(*(min_index), max_height));
+			print_result(it->first, (it->second).substr(*(min_index), 60), (it->second).substr(*(min_index), max_height));
 		}
 		catch(const char *msg) {
-			print_result(it->first, (it->second).substr(*(min_index)-40, 80), (it->second).substr(*(min_index), max_height));
+			print_result(it->first, (it->second).substr(*(min_index)-30, 60), (it->second).substr(*(min_index), max_height));
 		}
 		// cout << *min_element(index_list.begin(), index_list.end());
 		
@@ -89,8 +89,42 @@ void test_two(string query) {
 	cout << "\nFound in: " << accum_time(requestStart, requestEnd) << endl;
 }
 
-void test_three() {
+void test_three(string query) {
+	// Match string
+	// Match substr
+	// Match less stop_words
 	
+	vector <pair<string, int>> scores;
+	struct timespec requestStart, requestEnd;
+	auto stories = get_stories("AesopTales.txt");
+	
+	clock_gettime(CLOCK_REALTIME, &requestStart);
+	for(auto it = stories.begin(); it != stories.end(); it++) {
+		string text = it->second+"#"+query+"$";
+		SuffixTree st(text, (it->second).size());
+		int max_height = 0;
+		auto index_list = st.get_LCS(&max_height);
+		scores.push_back((pair<string, int>(it->first, 0)));
+		if(!index_list.size()) {
+			continue;
+		}
+		
+		scores.back().second = index_list.size();
+		
+	}
+	
+	sort(scores.begin(), scores.end(), 
+		[](const pair<string,int> &a, const pair<string,int> &b) -> bool { 
+			return (a.second < b.second); 
+		}	
+	);
+	clock_gettime(CLOCK_REALTIME, &requestEnd);
+	
+	for(auto it = scores.begin(); it != scores.end(); it++) {
+		print_result(it->first, it->second);
+	}
+	
+	cout << "\nFound in: " << accum_time(requestStart, requestEnd) << endl;
 }
 
 void test_test(string query) {
@@ -159,8 +193,8 @@ void run_tests(char** args, int no_of_args) {
 			test_two(query);
 		}
 		
-		if(!strcmp(args[0], "-3")) {
-			test_three();
+		if(mode == "-3") {
+			test_three(query);
 		}
 		
 		if(mode == "-t") {

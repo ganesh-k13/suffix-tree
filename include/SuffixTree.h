@@ -4,8 +4,8 @@
 
 using namespace std;
 
-extern vector <int> index_list;
-
+#ifndef SUFFIX_TREE_H
+#define SUFFIX_TREE_H
 class SuffixTree {
 	string text; 
 	Node *root; //Pointer to root node
@@ -22,6 +22,7 @@ class SuffixTree {
 	int *split_end;
 	int size; //Length of input string
 	int size_sub_str;
+	vector <int> index_list;
 	public: 
 		
 		SuffixTree(string text);
@@ -62,3 +63,4 @@ class SuffixTree {
 		
 		vector <int> get_LCS(int *height);
 };
+#endif

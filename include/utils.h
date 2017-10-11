@@ -18,3 +18,4 @@ double accum_time(struct timespec requestStart, struct timespec requestEnd);
 map <string, string> get_stories(string file_name);
 void print_result(string title, string lines);
 void print_result(string title, string lines, string substring);
+void print_result(string title, int score);

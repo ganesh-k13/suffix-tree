@@ -1,7 +1,5 @@
 #include "../include/SuffixTree.h"
 
-vector <int> index_list;
-
 SuffixTree::SuffixTree(string text) {
 	this->text = text;
 	root = NULL;
@@ -18,7 +16,7 @@ SuffixTree::SuffixTree(string text) {
 	size = -1; //Length of input string
 	size_sub_str = -1;
 	build_suffix_tree();
-	
+	index_list.clear();
 }
 
 SuffixTree::SuffixTree(string text, int size_sub_str) {
@@ -38,7 +36,7 @@ SuffixTree::SuffixTree(string text, int size_sub_str) {
 	size = -1; //Length of input string
 	size_sub_str = -1;
 	build_suffix_tree();
-	
+	index_list.clear();
 }
 
 SuffixTree::~SuffixTree() {
@@ -293,7 +291,7 @@ int SuffixTree::do_traversal(Node *n, int label_height, int* max_height, int* su
 	}
 	int i=0;
 	int ret = -1;
-	if(n->get_suffix_index() < 0) {//If it is internal node {
+	if(n->get_suffix_index() < 0) {
 		for (i = 0; i < MAX_CHAR; i++) {
 			if(n->get_children(i) != NULL) {
 				ret = do_traversal(n->get_children(i), label_height + 

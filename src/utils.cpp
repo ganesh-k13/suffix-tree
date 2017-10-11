@@ -82,22 +82,26 @@ map <string, string> get_stories(string file_name) {
 void print_result(string title, string lines) {
 	
 	if(lines.size()) {
-		cout << "[" << title << "] : ... " << lines << " ..." <<  endl;
+		cout << "[ " << title << "] : ... " << lines << " ..." <<  endl;
 		return;
 	}
 	
-	cout << "[" << title << "] : No results found!! "<<  endl;
+	cout << "[ " << title << "] : No results found!! "<<  endl;
 }
 
 void print_result(string title, string lines, string substring) {
 	
 	if(lines.size()) {
-		cout << "[" << title << "] : ... " << lines << " ..." <<  endl;
-		cout << "Substring matched: " << substring << endl << endl;
+		cout << "[ " << title << "] : ... " << lines << " ..." <<  endl;
+		cout << "First longest substring matched: " << substring << endl << endl;
 		return;
 	}
-	cout << "[" << title << "] : No results found!! "<<  endl;
+	cout << "[ " << title << "] : No results found!! "<<  endl;
 	
+}
+
+void print_result(string title, int score) {
+	cout << "[ " << title << "] : Score : " << score <<  endl;
 }
 
 #if 0
