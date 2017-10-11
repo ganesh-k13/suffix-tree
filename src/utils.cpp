@@ -80,8 +80,24 @@ map <string, string> get_stories(string file_name) {
 }
 
 void print_result(string title, string lines) {
-	cout << "[" << title << "] : ... " << lines << " ..." <<  endl;
-	return;
+	
+	if(lines.size()) {
+		cout << "[" << title << "] : ... " << lines << " ..." <<  endl;
+		return;
+	}
+	
+	cout << "[" << title << "] : No results found!! "<<  endl;
+}
+
+void print_result(string title, string lines, string substring) {
+	
+	if(lines.size()) {
+		cout << "[" << title << "] : ... " << lines << " ..." <<  endl;
+		cout << "Substring matched: " << substring << endl << endl;
+		return;
+	}
+	cout << "[" << title << "] : No results found!! "<<  endl;
+	
 }
 
 #if 0

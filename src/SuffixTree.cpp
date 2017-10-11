@@ -250,8 +250,8 @@ int SuffixTree::do_traversal(Node *n, const char* str, int idx) {
 				// cout << "\nsubstring count: 1";
 				index_list.push_back(n->get_suffix_index());
 			}
-			// else
-				// cout << "\nsubstring count: " << count_leaf(n) << endl;
+			else
+				count_leaf(n);
 			return 1;
 		}
 	}
@@ -263,67 +263,51 @@ int SuffixTree::do_traversal(Node *n, const char* str, int idx) {
 }
 
 vector <int> SuffixTree::check_for_sub_string(const char* str) {
-	int res = do_traversal(root, str, 0);
-	if(res == 1) {
-		printf("\nPattern <%s> is a Substring\n", str);
-		// cout << endl << index_list.size() << endl;
-	}
-	else
-		cout << "\nPattern <"<< str <<"> is NOT a Substring\n";
-	
+	index_list.clear();
+	do_traversal(root, str, 0);
 	return index_list;
 }
 
 #if 1
-vector <int> SuffixTree::get_LCS() {
-    int max_height = 0;
+vector <int> SuffixTree::get_LCS(int *max_height) {
     int substring_start_index = 0;
-    do_traversal(root, 0, &max_height, &substring_start_index);
-     
-    if(max_height == 0) {
-        cout << "No common substring\n";
+    do_traversal(root, 0, max_height, &substring_start_index);
+	
+	
+	index_list.clear();
+    if(*max_height == 0) {
+        return index_list;
 	}
 	
 	else {
-		index_list.clear();
 		// cout << text.substr(substring_start_index, max_height);
-		do_traversal(root, text.substr(substring_start_index, max_height).c_str(), 0);
+		do_traversal(root, text.substr(substring_start_index, *max_height).c_str(), 0);
 	}
-    
+    // cout << index_list.size();
 	return index_list;
 }
 
-int SuffixTree::do_traversal(Node *n, int label_height, int* max_height, int* substring_start_index)
-{
-	if(n == NULL)
-	{
+int SuffixTree::do_traversal(Node *n, int label_height, int* max_height, int* substring_start_index) {
+	if(n == NULL) {
 		return NULL;
 	}
 	int i=0;
 	int ret = -1;
-	if(n->get_suffix_index() < 0) //If it is internal node
-	{
-		for (i = 0; i < MAX_CHAR; i++)
-		{
-			if(n->get_children(i) != NULL)
-			{
+	if(n->get_suffix_index() < 0) {//If it is internal node {
+		for (i = 0; i < MAX_CHAR; i++) {
+			if(n->get_children(i) != NULL) {
 				ret = do_traversal(n->get_children(i), label_height + 
 					edge_length(n->get_children(i)), 
 					max_height, substring_start_index);
 				 
 				if(n->get_suffix_index() == -1)
 					n->set_suffix_index(ret);
-				else if((n->get_suffix_index() == -2 && ret == -3) ||
-					(n->get_suffix_index() == -3 && ret == -2) || 
-					n->get_suffix_index() == -4)
-				{
+				else if((n->get_suffix_index() == -2 && ret == -3) || (n->get_suffix_index() == -3 && ret == -2) ||  n->get_suffix_index() == -4) {
 					n->set_suffix_index(-4);//Mark node as XY
 					//Keep track of deepest node
-					if(*max_height < label_height)
-					{
+					if(*max_height < label_height) {
 						*max_height = label_height;
-						*substring_start_index = *(n->get_end()) - 
-							label_height + 1;
+						*substring_start_index = *(n->get_end()) - label_height + 1;
 					}
 				}
 			}

@@ -60,5 +60,5 @@ class SuffixTree {
 
 		vector <int> check_for_sub_string(const char* str);
 		
-		vector <int> get_LCS();
+		vector <int> get_LCS(int *height);
 };

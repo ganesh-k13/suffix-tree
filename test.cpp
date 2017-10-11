@@ -18,20 +18,27 @@ void test_one(string query) {
 	clock_gettime(CLOCK_REALTIME, &requestStart);
 	auto index_list = st.check_for_sub_string(query.c_str());
 	clock_gettime(CLOCK_REALTIME, &requestEnd);
-	cout << "\nMatches found in: " << accum_time(requestStart, requestEnd) << endl << endl;
 	
-	auto it_m = title_map.begin();
-	// for(auto it_v = index_list.begin(); it_v != index_list.end(); ++it_v) {
-		// cout << *it_v << endl;
-	// }
+	if(index_list.size()) {
+		cout << "\nMatches found in: " << accum_time(requestStart, requestEnd) << endl << endl;
 	
-	for(auto it = index_list.begin(); it != index_list.end(); ++it) {
-		auto pos = nearest_search(end_points, *it);
-		// cout << *(pos_pair.second)-10 << " " << *(pos_pair.second)+10;
-		// cout << "[" << title_map[pos] << "] : ... " << all_lines.substr(*(it)-40, 80) << " ..." <<  endl;
-		print_result(title_map[pos], all_lines.substr(*(it)-40, 80));
+		auto it_m = title_map.begin();
+		// for(auto it_v = index_list.begin(); it_v != index_list.end(); ++it_v) {
+			// cout << *it_v << endl;
+		// }
+		
+		for(auto it = index_list.begin(); it != index_list.end(); ++it) {
+			auto pos = nearest_search(end_points, *it);
+			// cout << *(pos_pair.second)-10 << " " << *(pos_pair.second)+10;
+			// cout << "[" << title_map[pos] << "] : ... " << all_lines.substr(*(it)-40, 80) << " ..." <<  endl;
+			print_result(title_map[pos], all_lines.substr(*(it)-40, 80));
+		}
 	}
 	
+	else {
+		cout << "Pattern not a substring";
+		cout << "\nNo matches found in: " << accum_time(requestStart, requestEnd) << endl << endl;
+	}
 	#if 0
 	
 	cout << endl << endl;
@@ -54,11 +61,23 @@ void test_two(string query) {
 		SuffixTree st(text, (it->second).size());
 		// clock_gettime(CLOCK_REALTIME, &requestEnd);
 		
-		auto index_list = st.get_LCS();
+		int max_height = 0;
+		auto index_list = st.get_LCS(&max_height);
+		
+		if(index_list.size() == 0) {
+			print_result(it->first, "");
+			continue;
+		}
+		
 		auto min_index = min_element(index_list.begin(), index_list.end());
 		
 		// cout << *min_index;
-		// print_result(it->first, (it->second).substr(*(min_index), 80));
+		try {
+			print_result(it->first, (it->second).substr(*(min_index), 80), (it->second).substr(*(min_index), max_height));
+		}
+		catch(const char *msg) {
+			print_result(it->first, (it->second).substr(*(min_index)-40, 80), (it->second).substr(*(min_index), max_height));
+		}
 		// cout << *min_element(index_list.begin(), index_list.end());
 		
 		// cout << "\nTree Built in: " << accum_time(requestStart, requestEnd) << endl;
@@ -75,7 +94,6 @@ void test_three() {
 }
 
 void test_test(string query) {
-	
 	#if 0
 	string text = "xabxaabxa#babxba$";
 	int size_sub_str = 10;
@@ -100,18 +118,20 @@ void test_test(string query) {
 	auto stories = get_stories("AesopTales.txt");
 	
 	for(auto it = stories.begin(); it != stories.end(); it++) {
+		// cout << it->second+"#"+query+"$";
 		string text = it->second+"#"+query+"$";
 		// clock_gettime(CLOCK_REALTIME, &requestStart);
 		SuffixTree st(text, (it->second).size());
 		// clock_gettime(CLOCK_REALTIME, &requestEnd);
 		
-		auto index_list = st.get_LCS();
+		int max_height;
+		auto index_list = st.get_LCS(&max_height);
+		// cout << index_list.size();
 		auto min_index = min_element(index_list.begin(), index_list.end());
 		
 		for(auto it = index_list.begin(); it != index_list.end(); it++) {
 			cout << *it << " ";
 		}
-		cout << endl;
 		// print_result(it->first, (it->second).substr(*(min_index), 80));
 		// cout << *min_element(index_list.begin(), index_list.end());
 		
