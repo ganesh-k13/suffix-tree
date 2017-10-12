@@ -94,7 +94,7 @@ void test_three(string query) {
 	// Match string
 	// Match substr
 	// Match less stop_words
-	
+	auto stop_words = get_stop_words("stopwords");
 	vector <pair<string, int>> scores;
 	struct timespec requestStart, requestEnd;
 	auto stories = get_stories("AesopTales.txt");
@@ -120,7 +120,10 @@ void test_three(string query) {
 			 index_list.clear();
 			 max_height = 0;
 			 index_list =  st.check_for_sub_string((it_s)->c_str());
-	 		 scores.back().second += index_list.size();
+			 if(stop_words.find(*(it_s)) != stop_words.end())
+	 		 	scores.back().second += (index_list.size()*2);
+	 		 else
+	 		 	scores.back().second += (index_list.size());
 		}
 	}
 	//	cout << "entr";
