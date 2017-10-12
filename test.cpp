@@ -1,6 +1,7 @@
 #include "include/Node.h"
 #include "include/SuffixTree.h"
 #include "include/utils.h"
+#include <sstream>
 
 void test_one(string query) {
 	struct timespec requestStart, requestEnd;
@@ -100,6 +101,7 @@ void test_three(string query) {
 	
 	clock_gettime(CLOCK_REALTIME, &requestStart);
 	for(auto it = stories.begin(); it != stories.end(); it++) {
+		// Full match
 		string text = it->second+"#"+query+"$";
 		SuffixTree st(text, (it->second).size());
 		int max_height = 0;
@@ -108,11 +110,20 @@ void test_three(string query) {
 		if(!index_list.size()) {
 			continue;
 		}
+		scores.back().second = max_height;
 		
-		scores.back().second = index_list.size();
+		// words match
+		istringstream iss(query);
+		vector<string> tokens{istream_iterator<string>{iss}, istream_iterator<string>{}};
 		
+		for(auto it_s = tokens.begin(); it_s != tokens.end(); it_s++) {
+			 index_list.clear();
+			 max_height = 0;
+			 index_list =  st.check_for_sub_string((it_s)->c_str());
+	 		 scores.back().second += index_list.size();
+		}
 	}
-	
+	//	cout << "entr";
 	sort(scores.begin(), scores.end(), 
 		[](const pair<string,int> &a, const pair<string,int> &b) -> bool { 
 			return (a.second < b.second); 
@@ -149,6 +160,7 @@ void test_test(string query) {
 	
 	#endif
 	
+	#if 0
 	auto stories = get_stories("AesopTales.txt");
 	
 	for(auto it = stories.begin(); it != stories.end(); it++) {
@@ -173,6 +185,20 @@ void test_test(string query) {
 		
 	}
 	return;
+	
+	#endif
+	
+	#if 0
+	string s("Somewhere down the road");
+	istringstream iss(s);
+
+	vector<string> tokens{istream_iterator<string>{iss}, istream_iterator<string>{}};
+              
+        for(auto it = tokens.begin(); it != tokens.end(); ++it) {
+        	cout << *it << endl;
+        }
+        
+        #endif
 }
 
 void run_tests(char** args, int no_of_args) {
