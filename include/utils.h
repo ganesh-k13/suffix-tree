@@ -2,6 +2,7 @@
 #include <fstream>
 #include <map>
 #include <vector>
+#include <unordered_set>
 #include <iterator>
 #include <utility>
 #include <algorithm>
@@ -11,6 +12,7 @@
 
 using namespace std;
 
+unordered_set <string> get_stop_words(string file_name);
 map <int, string> get_data(string file_name, string *all_lines, vector<int> *end_points);
 vector <int>::iterator nearest_binary_search(vector <int> end_points);
 int nearest_search(vector <int> end_points, int index);
@@ -19,3 +21,4 @@ map <string, string> get_stories(string file_name);
 void print_result(string title, string lines);
 void print_result(string title, string lines, string substring);
 void print_result(string title, int score);
+

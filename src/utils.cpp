@@ -7,6 +7,18 @@ double accum_time(struct timespec requestStart, struct timespec requestEnd) {
             (( requestEnd.tv_nsec - requestStart.tv_nsec ) / MILLION);
 }
 
+unordered_set <string> get_stop_words(string file_name) {
+	string line;
+	ifstream file(file_name.c_str());	
+	unordered_set <string> stop_words;
+	
+	while(getline(file, line)) {
+		stop_words.insert(line);
+	}
+	
+	return stop_words;
+}
+
 int nearest_search(vector <int> end_points, int index) {
 	
 	int index_found = 0;

@@ -199,6 +199,12 @@ void test_test(string query) {
         }
         
         #endif
+        
+        auto stop = get_stop_words("stopwords");
+        
+        for(auto it = stop.begin(); it != stop.end(); it++) {
+        	cout << *it << endl;
+        }
 }
 
 void run_tests(char** args, int no_of_args) {
