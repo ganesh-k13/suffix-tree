@@ -1,6 +1,6 @@
 # Suffix Tree
 
-Suffix Tree (Ukkonene's) implementation written in C++.
+Suffix Tree (Ukkonen's) implementation written in C++.
 
 ### Prerequisites
 
@@ -9,7 +9,7 @@ Suffix Tree (Ukkonene's) implementation written in C++.
 
 ### Installing
 
-First compile the project in your local system by:
+First compile the project on your local system by:
 
 ```
 make clean
