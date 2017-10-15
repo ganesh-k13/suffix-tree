@@ -57,14 +57,17 @@ void test_two(string query) {
 		
 		SuffixTree st((it->second), query);
 		
+		// Get list of all occurences of the LCS
 		int max_height = 0;
 		auto index_list = st.get_LCS(&max_height);
 		
+		// LCS size is 0, in other words max_height = 0
 		if(index_list.size() == 0) {
 			print_result(it->first, "");
 			continue;
 		}
 		
+		// Get first index, o(n)
 		auto min_index = min_element(index_list.begin(), index_list.end());
 		
 		try {
