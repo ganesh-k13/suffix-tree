@@ -2,14 +2,14 @@
 
 SuffixTree::SuffixTree(string text) {
 	this->text = text;
+	
 	root = NULL;
 	last_new_node = NULL;
 	active_node = NULL;
-	
 	active_edge = -1;
 	active_length = 0;
-	
 	remaining_suffix_count = 0;
+	
 	leaf_end = -1;
 	root_end = NULL;
 	split_end = NULL;
@@ -22,14 +22,14 @@ SuffixTree::SuffixTree(string text) {
 SuffixTree::SuffixTree(string doc, string query) {
 	this->text = doc+"#"+query+"$";
 	this->size_sub_str = doc.size();
+	
 	root = NULL;
 	last_new_node = NULL;
 	active_node = NULL;
-	
 	active_edge = -1;
 	active_length = 0;
-	
 	remaining_suffix_count = 0;
+	
 	leaf_end = -1;
 	root_end = NULL;
 	split_end = NULL;

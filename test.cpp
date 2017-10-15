@@ -46,7 +46,7 @@ void test_one(string query) {
 	st.free_suffix_tree_by_post_order(st.get_root());
 }
 
-// BUG: Valgrind shows errors
+// [BUG]: Valgrind shows errors
 void test_two(string query) {
 	
 	struct timespec requestStart, requestEnd;
@@ -54,7 +54,7 @@ void test_two(string query) {
 	
 	clock_gettime(CLOCK_REALTIME, &requestStart);
 	for(auto it = stories.begin(); it != stories.end(); it++) {
-		// string text = it->second+"#"+query+"$";
+		
 		SuffixTree st((it->second), query);
 		
 		int max_height = 0;
@@ -83,13 +83,16 @@ void test_two(string query) {
 	cout << "\nFound in: " << accum_time(requestStart, requestEnd) << endl;
 }
 
-// TODO: Get k greatest instead of all.
+// [TODO]: Get k greatest instead of all.
 //       Add more parameters for score.
+// [IMPORTANT]
+// Please go through the report to understand
+// the reason for this scoring, 
 void test_three(string query) {
 	// Match string
 	// Match substr
 	// Match less stop_words
-	auto stop_words = get_stop_words("stopwords");
+	auto stop_words = get_stop_words("tmp/stopwords.txt");
 	vector <pair<string, int>> scores;
 	struct timespec requestStart, requestEnd;
 	auto stories = get_stories("AesopTales.txt");
@@ -97,15 +100,12 @@ void test_three(string query) {
 	clock_gettime(CLOCK_REALTIME, &requestStart);
 	for(auto it = stories.begin(); it != stories.end(); it++) {
 		// Full match
-		// string text = it->second+"#"+query+"$";
-		SuffixTree st((it->second), query);
-		int max_height = 0;
-		auto index_list = st.get_LCS(&max_height);
+		SuffixTree st((it->second));
+		auto index_list = st.check_for_sub_string(query.c_str());
 		scores.push_back((pair<string, int>(it->first, 0)));
-		if(!index_list.size()) {
-			continue;
+		if(index_list.size()) {
+			scores.back().second = query.size()*2;
 		}
-		scores.back().second = max_height;
 		
 		// words match
 		istringstream iss(query);
@@ -113,23 +113,22 @@ void test_three(string query) {
 		
 		for(auto it_s = tokens.begin(); it_s != tokens.end(); it_s++) {
 			 index_list.clear();
-			 max_height = 0;
 			 index_list =  st.check_for_sub_string((it_s)->c_str());
 			 if(stop_words.find(*(it_s)) != stop_words.end())
-	 		 	scores.back().second += (index_list.size()*2);
+	 		 	scores.back().second += (index_list.size()/2);
 	 		 else
-	 		 	scores.back().second += (index_list.size());
+	 		 	scores.back().second += (index_list.size()*2);
 		}
 	}
 	
 	sort(scores.begin(), scores.end(), 
 		[](const pair<string,int> &a, const pair<string,int> &b) -> bool { 
-			return (a.second < b.second); 
+			return (a.second > b.second); 
 		}	
 	);
 	clock_gettime(CLOCK_REALTIME, &requestEnd);
 	
-	for(auto it = scores.begin(); it != scores.end(); it++) {
+	for(auto it = scores.begin(); it != scores.begin()+5; it++) {
 		print_result(it->first, it->second);
 	}
 	
@@ -193,11 +192,11 @@ void test_test(string query) {
 
 	vector<string> tokens{istream_iterator<string>{iss}, istream_iterator<string>{}};
               
-        for(auto it = tokens.begin(); it != tokens.end(); ++it) {
-        	cout << *it << endl;
-        }
+	for(auto it = tokens.begin(); it != tokens.end(); ++it) {
+		cout << *it << endl;
+	}
         
-        #endif
+    #endif
         
         auto stop = get_stop_words("stopwords");
         

@@ -30,8 +30,10 @@ OPTIONS:
     -2 [QUERY]...
         Get first occurences of the query or it's Longest Common Subsequence(LCS) as [TITLE] ... <Sorrounding 80 characters> ... 
     -3 [QUERY]...
-        [TODO]
+        Get the top 5 documents based on relevence with the query.
     
+EXAMPLE:
+	./test -3 cats in the cradle and the silver spoon
 ```
 
 ## Deployment
@@ -42,11 +44,19 @@ For using the Suffix Tree:
 * Include SuffixTree.h and Node.h to your source file.
 * Use SuffixTree.o and Node.o object files and compile your program:
  
+Alternative (recommended):
+
+```
+make clean
+make slib
+```
+
+Copy the libsuffix.a from lib folder and use it as static library.
+
 
 ## Built With
 
 * [C++](http://www.cplusplus.com/) - The main backend used
-* [clang](https://clang.llvm.org/) - Used for testing
 
 ## Authors
 
@@ -55,5 +65,6 @@ For using the Suffix Tree:
 ## Acknowledgments
 
 * This is developed as an assignment for Advanced Algorithms Course.
-* This code is completely based on Geeks For Geeks implementation of [Suffix tree](http://www.geeksforgeeks.org/generalized-suffix-tree-1/) using C.
+* I would like to thank my professors, Prof. NS Kumar and Prof. Channa Bankapur for their valuable advice.
+* This code is based on Geeks For Geeks implementation of [Suffix tree](http://www.geeksforgeeks.org/generalized-suffix-tree-1/) using C.
 * I would like to thank [Tushar Roy](https://www.youtube.com/user/tusharroy2525) for his [video](https://www.youtube.com/watch?v=aPRqocoBsFQ) on Ukkonens implementation of Suffix Tree.

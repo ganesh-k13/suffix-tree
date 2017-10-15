@@ -8,10 +8,10 @@ $(info using clang++ over g++)
 CC = clang++
 endif
 
-CC = clang++
 IDIR=include
 ODIR=obj
 SRCDIR=src
+LDIR=lib
 
 test:	$(ODIR)/test.o $(ODIR)/Node.o $(ODIR)/SuffixTree.o $(ODIR)/utils.o
 		$(CC) -std=c++11 -o test -g $(ODIR)/test.o $(ODIR)/SuffixTree.o $(ODIR)/Node.o $(ODIR)/utils.o
@@ -31,3 +31,6 @@ $(ODIR)/utils.o: $(SRCDIR)/utils.cpp $(IDIR)/utils.h
 clean:
 	rm -f $(ODIR)/*.o
 	rm test
+	
+slib: $(ODIR)/Node.o $(ODIR)/SuffixTree.o
+	ar rcs $(LDIR)/libsuffix.a $(ODIR)/Node.o $(ODIR)/SuffixTree.o
