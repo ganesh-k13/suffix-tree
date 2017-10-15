@@ -19,9 +19,9 @@ SuffixTree::SuffixTree(string text) {
 	index_list.clear();
 }
 
-SuffixTree::SuffixTree(string text, int size_sub_str) {
-	this->text = text;
-	this->size_sub_str = size_sub_str;
+SuffixTree::SuffixTree(string doc, string query) {
+	this->text = doc+"#"+query+"$";
+	this->size_sub_str = doc.size();
 	root = NULL;
 	last_new_node = NULL;
 	active_node = NULL;
@@ -33,8 +33,7 @@ SuffixTree::SuffixTree(string text, int size_sub_str) {
 	leaf_end = -1;
 	root_end = NULL;
 	split_end = NULL;
-	size = -1; //Length of input string
-	size_sub_str = -1;
+	size = -1; 
 	build_suffix_tree();
 	index_list.clear();
 }
@@ -49,7 +48,7 @@ SuffixTree::~SuffixTree() {
 
 Node* SuffixTree::new_node(int start, int *end) {
 	Node *node = new Node(start, end);
-	node->set_suffix_link(root); // node->suffix_link = root;
+	node->set_suffix_link(root); 
 	
 	return node;
 }
@@ -84,22 +83,22 @@ void SuffixTree::extend_suffix_tree(int pos) {
 
 		if (active_node->get_children(text[active_edge]) == NULL) {
 			
-			active_node->set_children(text[active_edge], new_node(pos, &leaf_end)); // active_node->children[text[active_edge]] = new_node(pos, &leaf_end);
+			active_node->set_children(text[active_edge], new_node(pos, &leaf_end)); 
 
 			if (last_new_node != NULL) {
-				last_new_node->set_suffix_link(active_node); // last_new_node->suffix_link = active_node;
+				last_new_node->set_suffix_link(active_node); 
 				last_new_node = NULL;
 			}
 		}
 		
 		else {
-			Node *next = active_node->get_children(text[active_edge]); //active_node->children[text[active_edge]];
+			Node *next = active_node->get_children(text[active_edge]); 
 			if (walk_down(next)) {
 				continue;
 			}
 			if (text[next->get_start() + active_length] == text[pos]) {
 				if(last_new_node != NULL && active_node != root) {
-					last_new_node->set_suffix_link(active_node);// last_new_node->suffix_link = active_node;
+					last_new_node->set_suffix_link(active_node);
 					last_new_node = NULL;
 				}
 
@@ -111,14 +110,14 @@ void SuffixTree::extend_suffix_tree(int pos) {
 			*split_end = next->get_start() + active_length - 1;
 
 			Node *split = new_node(next->get_start(), split_end);
-			active_node->set_children(text[active_edge], split);// active_node->children[text[active_edge]] = split;
+			active_node->set_children(text[active_edge], split);
 
-			split->set_children(text[pos], new_node(pos, &leaf_end));// split->children[text[pos]] = new_node(pos, &leaf_end);
+			split->set_children(text[pos], new_node(pos, &leaf_end));
 			next->set_start(next->get_start()+active_length);
-			split->set_children(text[next->get_start()], next); // split->children[text[next->start]] = next;
+			split->set_children(text[next->get_start()], next); 
 
 			if (last_new_node != NULL) {
-				last_new_node->set_suffix_link(split);// last_new_node->suffix_link = split;
+				last_new_node->set_suffix_link(split);
 			}
 
 			last_new_node = split;
@@ -135,11 +134,6 @@ void SuffixTree::extend_suffix_tree(int pos) {
 	}
 }
 
-void SuffixTree::print(int i, int j) {
-	
-	for (int k=i; k<=j; k++)
-		cout << text[k];
-}
 
 void SuffixTree::set_suffix_index_by_DFS(Node *n, int labelHeight) {
 	if (n == NULL) return;
@@ -148,10 +142,6 @@ void SuffixTree::set_suffix_index_by_DFS(Node *n, int labelHeight) {
 	int i;
 	for (i = 0; i < MAX_CHAR; i++) {
 		if (n->get_children(i) != NULL) {
-			//Uncomment below two lines to print suffix index
-		// if (leaf == 1 && n->start != -1)
-			// printf(" [%d]\n", n->get_suffix_index());
-
 			//Current node is not a leaf as it has outgoing
 			//edges from it.
 			leaf = 0;
@@ -160,8 +150,6 @@ void SuffixTree::set_suffix_index_by_DFS(Node *n, int labelHeight) {
 	}
 	if (leaf == 1) {
 		n->set_suffix_index(size - labelHeight);
-		//Uncomment below line to print suffix index
-		//printf(" [%d]\n", n->get_suffix_index());
 	}
 }
 
@@ -211,12 +199,12 @@ int SuffixTree::do_traversal_to_count_leaf(Node *n) {
 	if(n == NULL)
 		return 0;
 	if(n->get_suffix_index() > -1) {
-		// printf("\nFound at position: %d", n->get_suffix_index());
+		
 		index_list.push_back(n->get_suffix_index());
 		return 1;
 	}
 	
-	// cout << endl << index_list.size() << endl;
+	
 	int count = 0;
 	int i = 0;
 	for (i = 0; i < MAX_CHAR; i++)
@@ -241,11 +229,11 @@ int SuffixTree::do_traversal(Node *n, const char* str, int idx) {
 	int res = -1;
 	if(n->get_start() != -1) {
 		res = build_suffix_tree(str, idx, n->get_start(), *(n->get_end()));
-		if(res == -1) //no match
+		if(res == -1) 
 			return -1;
 		if(res == 1) {
 			if(n->get_suffix_index() > -1) { 
-				// cout << "\nsubstring count: 1";
+				
 				index_list.push_back(n->get_suffix_index());
 			}
 			else
@@ -257,7 +245,7 @@ int SuffixTree::do_traversal(Node *n, const char* str, int idx) {
 	if(n->get_children(str[idx]) != NULL)
 		return do_traversal(n->get_children(str[idx]), str, idx);
 	else
-		return -1; // no match
+		return -1; 
 }
 
 vector <int> SuffixTree::check_for_sub_string(const char* str) {
@@ -278,10 +266,9 @@ vector <int> SuffixTree::get_LCS(int *max_height) {
 	}
 	
 	else {
-		// cout << text.substr(substring_start_index, max_height);
 		do_traversal(root, text.substr(substring_start_index, *max_height).c_str(), 0);
 	}
-    // cout << index_list.size();
+    
 	return index_list;
 }
 
@@ -294,9 +281,7 @@ int SuffixTree::do_traversal(Node *n, int label_height, int* max_height, int* su
 	if(n->get_suffix_index() < 0) {
 		for (i = 0; i < MAX_CHAR; i++) {
 			if(n->get_children(i) != NULL) {
-				ret = do_traversal(n->get_children(i), label_height + 
-					edge_length(n->get_children(i)), 
-					max_height, substring_start_index);
+				ret = do_traversal(n->get_children(i), label_height +  edge_length(n->get_children(i)),  max_height, substring_start_index);
 				 
 				if(n->get_suffix_index() == -1)
 					n->set_suffix_index(ret);

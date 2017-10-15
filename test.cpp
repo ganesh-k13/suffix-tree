@@ -54,8 +54,8 @@ void test_two(string query) {
 	
 	clock_gettime(CLOCK_REALTIME, &requestStart);
 	for(auto it = stories.begin(); it != stories.end(); it++) {
-		string text = it->second+"#"+query+"$";
-		SuffixTree st(text, (it->second).size());
+		// string text = it->second+"#"+query+"$";
+		SuffixTree st((it->second), query);
 		
 		int max_height = 0;
 		auto index_list = st.get_LCS(&max_height);
@@ -97,8 +97,8 @@ void test_three(string query) {
 	clock_gettime(CLOCK_REALTIME, &requestStart);
 	for(auto it = stories.begin(); it != stories.end(); it++) {
 		// Full match
-		string text = it->second+"#"+query+"$";
-		SuffixTree st(text, (it->second).size());
+		// string text = it->second+"#"+query+"$";
+		SuffixTree st((it->second), query);
 		int max_height = 0;
 		auto index_list = st.get_LCS(&max_height);
 		scores.push_back((pair<string, int>(it->first, 0)));

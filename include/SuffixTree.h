@@ -26,7 +26,7 @@ class SuffixTree {
 	public: 
 		
 		SuffixTree(string text);
-		SuffixTree(string text, int size_sub_str);
+		SuffixTree(string doc, string query);
 		~SuffixTree();
 		Node *get_root();
 		Node *new_node(int start, int *end);
@@ -37,10 +37,6 @@ class SuffixTree {
 
 		void extend_suffix_tree(int pos);
 
-		void print(int i, int j);
-		//Print the suffix tree as well along with setting suffix index
-		//So tree will be printed in DFS manner
-		//Each edge along with it's suffix index will be printed
 		void set_suffix_index_by_DFS(Node *n, int labelHeight);
 
 		void free_suffix_tree_by_post_order(Node *n);
